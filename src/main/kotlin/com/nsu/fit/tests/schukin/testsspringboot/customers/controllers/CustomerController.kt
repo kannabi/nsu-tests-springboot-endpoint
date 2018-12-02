@@ -57,6 +57,7 @@ class CustomerController
     ): ResponseEntity<Customer> =
         ResponseEntity(
             customerService.updateCustomer(
+                id,
                 request.firstName,
                 request.lastName,
                 request.login,
