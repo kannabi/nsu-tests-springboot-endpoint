@@ -1,7 +1,6 @@
 package com.nsu.fit.tests.schukin.testsspringboot.plan.services
 
 import com.nsu.fit.tests.schukin.testsspringboot.plan.dto.Plan
-import org.apache.commons.lang3.Validate
 
 import org.springframework.stereotype.Service
 import java.util.*
@@ -38,33 +37,33 @@ class PlanService {
     }
 
     private fun validatePlan(plan: Plan) {
-        Validate.notNull(plan, "Plan must be not null")
-        plan.let { it ->
-            Validate.notNull(it.details, "Plan details must be not null")
-            Validate.notNull(it.name, "Plan name must be not null")
-
-            it.name.apply {
-                Validate.isTrue(length >= 2, "Name is too short")
-                Validate.isTrue(length <= 128, "Name is too long")
-                Validate.isTrue(
-                    Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
-                    "Name contains incorrect characters"
-                )
+//        Validate.notNull(plan, "Plan must be not null")
+//        plan.let { it ->
+//            Validate.notNull(it.details, "Plan details must be not null")
+//            Validate.notNull(it.name, "Plan name must be not null")
+//
+//            it.name.apply {
+//                Validate.isTrue(length >= 2, "Name is too short")
+//                Validate.isTrue(length <= 128, "Name is too long")
 //                Validate.isTrue(
-//                    !dbService.hasPlanWithName(this),
-//                    "There is plan with a this name already"
+//                    Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
+//                    "Name contains incorrect characters"
 //                )
-            }
-
-            it.details.length.let { detailsLen ->
-                Validate.isTrue(detailsLen >= 1, "Details is too short")
-                Validate.isTrue(detailsLen <= 1024, "Details is too long")
-            }
-
-            it.fee.let { fee ->
-                Validate.isTrue(fee >= 0, "Fee cannot be negative")
-                Validate.isTrue(fee <= 999999, "Fee is too large")
-            }
-        }
+////                Validate.isTrue(
+////                    !dbService.hasPlanWithName(this),
+////                    "There is plan with a this name already"
+////                )
+//            }
+//
+//            it.details.length.let { detailsLen ->
+//                Validate.isTrue(detailsLen >= 1, "Details is too short")
+//                Validate.isTrue(detailsLen <= 1024, "Details is too long")
+//            }
+//
+//            it.fee.let { fee ->
+//                Validate.isTrue(fee >= 0, "Fee cannot be negative")
+//                Validate.isTrue(fee <= 999999, "Fee is too large")
+//            }
+//        }
     }
 }
