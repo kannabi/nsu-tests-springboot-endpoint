@@ -1,5 +1,6 @@
 package com.nsu.fit.tests.schukin.testsspringboot.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.GenericGenerator
@@ -29,7 +30,7 @@ data class Customer (
     var login: String,
 
     @Column(name = "pass")
-    @JsonProperty("pass")
+    @JsonIgnore
     var pass: String,
 
     @Column(name = "balance")
