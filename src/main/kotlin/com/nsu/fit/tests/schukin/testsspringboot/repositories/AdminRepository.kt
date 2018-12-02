@@ -4,5 +4,5 @@ import com.nsu.fit.tests.schukin.testsspringboot.dto.Admin
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdminRepository: JpaRepository<Admin, String> {
-    fun findByLogin(login: String): Admin
+    fun findByLogin(login: String): Admin?
 }

@@ -14,7 +14,7 @@ data class Customer (
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @JsonProperty("id")
-    var id: String,
+    var id: String? = null,
 
     @Column(name = "first_name")
     @JsonProperty("firstName")

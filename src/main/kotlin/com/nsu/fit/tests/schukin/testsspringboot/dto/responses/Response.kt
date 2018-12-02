@@ -1,4 +1,4 @@
-package com.nsu.fit.tests.schukin.testsspringboot.dto
+package com.nsu.fit.tests.schukin.testsspringboot.dto.responses
 
 data class Response (
     val status: Int,
