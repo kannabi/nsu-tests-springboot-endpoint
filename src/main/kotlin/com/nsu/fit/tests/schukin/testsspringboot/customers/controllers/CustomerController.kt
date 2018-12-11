@@ -2,7 +2,9 @@ package com.nsu.fit.tests.schukin.testsspringboot.customers.controllers
 
 import com.nsu.fit.tests.schukin.testsspringboot.customers.dto.Customer
 import com.nsu.fit.tests.schukin.testsspringboot.customers.dto.requests.CreateCustomerRequest
+import com.nsu.fit.tests.schukin.testsspringboot.customers.dto.requests.TopUpBalanceRequest
 import com.nsu.fit.tests.schukin.testsspringboot.customers.dto.requests.UpdateCustomerRequest
+import com.nsu.fit.tests.schukin.testsspringboot.customers.exceptions.BalanceIncomingException
 import com.nsu.fit.tests.schukin.testsspringboot.customers.services.CustomerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -72,6 +74,17 @@ class CustomerController
         customerService.removeCustomer(id)
 
 
+    @PutMapping("/{id}/balance")
+    fun topUpBalance(
+        @PathVariable("id") id: String,
+        @RequestBody request: TopUpBalanceRequest
+    ): ResponseEntity<Customer> =
+        ResponseEntity(
+            customerService.topUpBalance(
+                id, request.incoming ?: throw BalanceIncomingException()
+            ),
+            HttpStatus.OK
+        )
 }
 
 

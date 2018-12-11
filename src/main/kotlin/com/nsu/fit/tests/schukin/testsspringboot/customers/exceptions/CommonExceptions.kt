@@ -5,3 +5,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Customer not found")
 class CustomerNotFound: IllegalAccessException("Customer not found")
+
+@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE, reason = "Incoming balance is wrong")
+class BalanceIncomingException: IllegalAccessException("Incoming balance is wrong")

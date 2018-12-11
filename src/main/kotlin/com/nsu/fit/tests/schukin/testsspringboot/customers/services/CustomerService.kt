@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 @Service
@@ -80,8 +79,13 @@ class CustomerService
      * Метод добавляет к текущему баласу amount.
      * amount - должен быть строго больше нуля.
      */
-    fun topUpBalance(customerId: UUID, amount: Int): Customer {
-        throw NotImplementedError("Please implement the method.")
+    fun topUpBalance(customerId: String, amount: Int): Customer {
+        if (amount <= 0) {
+            throw BalanceIncomingException()
+        }
+        val customer = customerRepository.findOne(customerId) ?: throw CustomerNotFound()
+        customer.balance += amount
+        return customerRepository.save(customer)
     }
 
     private fun validateCustomerFields(firstName: String?, lastName: String?, login: String?, password: String?) {
