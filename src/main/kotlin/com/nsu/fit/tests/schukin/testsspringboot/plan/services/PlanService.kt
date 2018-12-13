@@ -1,6 +1,10 @@
 package com.nsu.fit.tests.schukin.testsspringboot.plan.services
 
+import com.nsu.fit.tests.schukin.testsspringboot.common.utils.validate
 import com.nsu.fit.tests.schukin.testsspringboot.plan.dto.Plan
+import com.nsu.fit.tests.schukin.testsspringboot.plan.exceptions.*
+import com.nsu.fit.tests.schukin.testsspringboot.plan.repositories.PlanRepository
+import org.springframework.beans.factory.annotation.Autowired
 
 import org.springframework.stereotype.Service
 import java.util.*
@@ -8,7 +12,10 @@ import java.util.regex.Pattern
 
 
 @Service
-class PlanService {
+class PlanService
+@Autowired constructor(
+    private val planRepository: PlanRepository
+) {
     /**
      * Метод создает новый объект типа Plan. Ограничения:
      * name - длина не больше 128 символов и не меньше 2 включительно не содержит спец символов. Имена не пересекаются друг с другом;
@@ -37,33 +44,31 @@ class PlanService {
     }
 
     private fun validatePlan(plan: Plan) {
-//        Validate.notNull(plan, "Plan must be not null")
-//        plan.let { it ->
-//            Validate.notNull(it.details, "Plan details must be not null")
-//            Validate.notNull(it.name, "Plan name must be not null")
-//
-//            it.name.apply {
-//                Validate.isTrue(length >= 2, "Name is too short")
-//                Validate.isTrue(length <= 128, "Name is too long")
-//                Validate.isTrue(
-//                    Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
-//                    "Name contains incorrect characters"
-//                )
-////                Validate.isTrue(
-////                    !dbService.hasPlanWithName(this),
-////                    "There is plan with a this name already"
-////                )
-//            }
-//
-//            it.details.length.let { detailsLen ->
-//                Validate.isTrue(detailsLen >= 1, "Details is too short")
-//                Validate.isTrue(detailsLen <= 1024, "Details is too long")
-//            }
-//
-//            it.fee.let { fee ->
-//                Validate.isTrue(fee >= 0, "Fee cannot be negative")
-//                Validate.isTrue(fee <= 999999, "Fee is too large")
-//            }
-//        }
+        plan.let { it ->
+
+            (it.name ?: throw PlanNameIsNull()).apply {
+                validate(length >= 2, PlanNameIsTooShort::class.java)
+                validate(length <= 128, PlanNameIsTooLong::class.java)
+                validate(
+                    Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
+                    PlanNameIsIncorrect::class.java
+                )
+
+                validate(
+                    planRepository.findByName(this) == null,
+                    PlanNameIsAlreadyExists::class.java
+                )
+            }
+
+            (it.details ?: throw PlanDetailsIsNull()).length.let { detailsLen ->
+                validate(detailsLen >= 1, PlanDetailsIsTooShort::class.java)
+                validate(detailsLen <= 1024, PlanDetailsIsTooLong::class.java)
+            }
+
+            (it.fee ?: throw PlanFeeIsNull()).let { fee ->
+                validate(fee >= 0, PlanFeeIsTooSmall::class.java)
+                validate(fee <= 999999, PlanFeeIsTooBig::class.java)
+            }
+        }
     }
 }

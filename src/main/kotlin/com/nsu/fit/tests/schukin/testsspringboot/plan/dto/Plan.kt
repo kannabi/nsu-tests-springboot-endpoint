@@ -18,13 +18,13 @@ class Plan(
 
     @field:JsonProperty("name")
     @Column(name = "name")
-    var name: String,
+    var name: String? = null,
 
     @field:JsonProperty("details")
     @Column(name = "details")
-    var details: String,
+    var details: String? = null,
 
     @Column(name = "fee")
     @field:JsonProperty("fee")
-    var fee: Int
+    var fee: Int? = null
 )
