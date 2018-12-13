@@ -35,8 +35,7 @@ class CustomerController
     @GetMapping("/{id}")
     @ResponseBody
     fun getCustomer(
-        @PathVariable("id") id: String,
-        @RequestBody request: CreateCustomerRequest
+        @PathVariable("id") id: String
     ): ResponseEntity<Customer> =
         ResponseEntity(
             customerService.getCustomer(id),

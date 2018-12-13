@@ -15,16 +15,16 @@ class Subscription (
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @JsonProperty("id")
+    @field:JsonProperty("id")
     var id: String? = null,
 
     @OneToOne
     @JoinColumn(name = "customer_id")
-    @JsonProperty("customerId")
+    @field:JsonProperty("customerId")
     var customer: Customer,
 
     @OneToOne
     @JoinColumn(name = "plan_id")
-    @JsonProperty("planId")
+    @field:JsonProperty("planId")
     var planId: Plan
 )

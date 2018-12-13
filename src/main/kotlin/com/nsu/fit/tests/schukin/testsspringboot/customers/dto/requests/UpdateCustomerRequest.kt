@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class UpdateCustomerRequest (
-    @JsonProperty("firstName")
+    @field:JsonProperty("firstName")
     var firstName: String? = null,
 
-    @JsonProperty("lastName")
+    @field:JsonProperty("lastName")
     var lastName: String? = null,
 
-    @JsonProperty("login")
+    @field:JsonProperty("login")
     var login: String? = null,
 
-    @JsonProperty("pass")
+    @field:JsonProperty("pass")
     var pass: String? = null
 )

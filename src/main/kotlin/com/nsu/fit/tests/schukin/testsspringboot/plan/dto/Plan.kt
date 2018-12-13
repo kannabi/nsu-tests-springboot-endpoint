@@ -13,18 +13,18 @@ class Plan(
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @JsonProperty("id")
+    @field:JsonProperty("id")
     var id: String? = null,
 
-    @JsonProperty("name")
+    @field:JsonProperty("name")
     @Column(name = "name")
     var name: String,
 
-    @JsonProperty("details")
+    @field:JsonProperty("details")
     @Column(name = "details")
     var details: String,
 
     @Column(name = "fee")
-    @JsonProperty("fee")
+    @field:JsonProperty("fee")
     var fee: Int
 )

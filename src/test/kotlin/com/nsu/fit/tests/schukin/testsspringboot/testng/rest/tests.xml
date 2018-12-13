@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestNgReport" parallel="false">
+    <test name="GuiScenario">
+        <classes>
+            <class name="com.nsu.fit.tests.schukin.testsspringboot.testng.rest.TestCustomerTests"/>
+        </classes>
+    </test>
+</suite>

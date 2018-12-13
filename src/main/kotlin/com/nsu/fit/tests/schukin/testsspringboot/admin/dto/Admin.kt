@@ -13,14 +13,14 @@ class Admin (
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @JsonProperty
+    @field:JsonProperty("id")
     var id: String? = null,
 
     @Column(name = "login")
-    @JsonProperty("login")
+    @field:JsonProperty("login")
     var login: String,
 
     @Column(name = "password")
-    @JsonIgnore
+    @field:JsonIgnore
     var password: String
 )

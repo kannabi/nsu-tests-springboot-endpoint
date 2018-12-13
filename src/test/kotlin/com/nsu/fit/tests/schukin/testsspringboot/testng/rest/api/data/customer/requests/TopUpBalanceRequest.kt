@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class TopUpBalanceRequest (
-    @JsonProperty("incoming")
+    @field:JsonProperty("incoming")
     var incoming: Int? = null
 )

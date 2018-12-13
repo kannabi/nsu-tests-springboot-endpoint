@@ -20,7 +20,8 @@ class CustomerService
     /**
      * Метод возвращает список объектов типа customer.
      */
-    fun getCustomers(): List<Customer> = listOf()
+    fun getCustomers(): List<Customer> =
+        customerRepository.findAll().toList()
 
     /**
      * Метод создает новый объект типа Customer. Ограничения:
@@ -91,16 +92,16 @@ class CustomerService
     private fun validateCustomerFields(firstName: String?, lastName: String?, login: String?, password: String?) {
 
         firstName?.let {
-            validate(it.length < 2, FirstNameShort::class.java)
-            validate(it.length > 12, FirstNameTooLong::class.java)
+            validate(it.length > 2, FirstNameShort::class.java)
+            validate(it.length < 12, FirstNameTooLong::class.java)
             validate(it[0].isUpperCase(), FirstNameStartsFromCapital::class.java)
             validate(!it.contains(' '), FirstNameContainsSpace::class.java)
             validate(it.matches(Regex("^[A-Z][a-z]*")), FirstNameLowerCase::class.java)
         }
 
         lastName?.let {
-            validate(it.length < 2, LastNameShort::class.java)
-            validate(it.length > 12, LastNameTooLong::class.java)
+            validate(it.length > 2, LastNameShort::class.java)
+            validate(it.length < 12, LastNameTooLong::class.java)
             validate(it[0].isUpperCase(), LastNameStartsFromCapital::class.java)
             validate(!it.contains(' '), LastNameContainsSpace::class.java)
             validate(it.matches(Regex("^[A-Z][a-z]*")), LastNameLowerCase::class.java)
@@ -115,8 +116,8 @@ class CustomerService
         }
 
         password?.let {
-            validate(it.length < 6, PasswordTooShort::class.java)
-            validate(it.length > 12, PasswordTooLong::class.java)
+            validate(it.length > 6, PasswordTooShort::class.java)
+            validate(it.length < 12, PasswordTooLong::class.java)
         }
     }
 }

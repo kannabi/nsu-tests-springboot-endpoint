@@ -14,19 +14,19 @@ data class Customer (
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @JsonProperty("id")
+    @field:JsonProperty("id")
     var id: String? = null,
 
     @Column(name = "first_name")
-    @JsonProperty("firstName")
+    @field:JsonProperty("firstName")
     var firstName: String,
 
     @Column(name = "last_name")
-    @JsonProperty("lastName")
+    @field:JsonProperty("lastName")
     var lastName: String,
 
     @Column(name = "login")
-    @JsonProperty("login")
+    @field:JsonProperty("login")
     var login: String,
 
     @Column(name = "pass")
@@ -34,6 +34,6 @@ data class Customer (
     var pass: String,
 
     @Column(name = "balance")
-    @JsonProperty("balance")
+    @field:JsonProperty("balance")
     var balance: Int = 0
 )
