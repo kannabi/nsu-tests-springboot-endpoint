@@ -22,53 +22,76 @@ class PlanService
      * details - длина не больше 1024 символов и не меньше 1 включительно;
      * fee - больше либо равно 0 но меньше либо равно 999999.
      */
-    fun createPlan(plan: Plan): Plan {
-        validatePlan(plan)
-//        return dbService.createPlan(plan)
-        return TODO()
+    fun createPlan(name: String?, details: String?, fee: Int?): Plan {
+        validatePlan(
+            name ?: throw PlanNameIsNull(),
+            details ?: throw PlanDetailsIsNull(),
+            fee ?: throw PlanFeeIsNull()
+        )
+        return planRepository.save(
+            Plan(
+                name = name,
+                details = details,
+                fee = fee
+            )
+        )
     }
 
-    fun updatePlan(plan: Plan): Plan {
-        TODO()
+    fun updatePlan(id: String, name: String?, details: String?, fee: Int?): Plan {
+        validatePlan(name, details, fee)
+        val plan = planRepository.findOne(id)
+
+        name?.let {
+            plan.name = name
+        }
+
+        details?.let {
+            plan.details = details
+        }
+
+        fee?.let {
+            plan.fee = null
+        }
+
+        return planRepository.save(plan)
     }
 
-    fun removePlan(id: UUID) {
-        TODO()
-    }
+    fun removePlan(id: String) =
+        planRepository.delete(id)
+
+    fun getPlan(id: String): Plan? =
+        planRepository.findOne(id)
 
     /**
      * Метод возвращает список планов доступных для покупки.
      */
-    fun getPlans(customerId: UUID): List<Plan> {
-        TODO()
-    }
+    fun getPlans(): List<Plan> =
+        planRepository.findAll().toList()
 
-    private fun validatePlan(plan: Plan) {
-        plan.let { it ->
+    private fun validatePlan(name: String?, details: String?, fee: Int?) {
 
-            (it.name ?: throw PlanNameIsNull()).apply {
-                validate(length >= 2, PlanNameIsTooShort::class.java)
-                validate(length <= 128, PlanNameIsTooLong::class.java)
-                validate(
-                    Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
-                    PlanNameIsIncorrect::class.java
-                )
+        name?.apply {
+            validate(length >= 2, PlanNameIsTooShort::class.java)
+            validate(length <= 128, PlanNameIsTooLong::class.java)
+            validate(
+                Pattern.matches("[a-zA-Z0-9_\\-\\s]*", this),
+                PlanNameIsIncorrect::class.java
+            )
 
-                validate(
-                    planRepository.findByName(this) == null,
-                    PlanNameIsAlreadyExists::class.java
-                )
-            }
+            validate(
+                planRepository.findByName(this) == null,
+                PlanNameIsAlreadyExists::class.java
+            )
+        }
 
-            (it.details ?: throw PlanDetailsIsNull()).length.let { detailsLen ->
-                validate(detailsLen >= 1, PlanDetailsIsTooShort::class.java)
-                validate(detailsLen <= 1024, PlanDetailsIsTooLong::class.java)
-            }
+        details?.length?.let { detailsLen ->
+            validate(detailsLen >= 1, PlanDetailsIsTooShort::class.java)
+            validate(detailsLen <= 1024, PlanDetailsIsTooLong::class.java)
+        }
 
-            (it.fee ?: throw PlanFeeIsNull()).let { fee ->
-                validate(fee >= 0, PlanFeeIsTooSmall::class.java)
-                validate(fee <= 999999, PlanFeeIsTooBig::class.java)
-            }
+        fee?.let {
+            validate(it >= 0, PlanFeeIsTooSmall::class.java)
+            validate(it <= 999999, PlanFeeIsTooBig::class.java)
         }
     }
 }
