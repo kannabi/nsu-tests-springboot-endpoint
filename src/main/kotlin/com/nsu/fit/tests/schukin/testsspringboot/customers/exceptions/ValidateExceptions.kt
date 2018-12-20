@@ -3,6 +3,9 @@ package com.nsu.fit.tests.schukin.testsspringboot.customers.exceptions
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Plan not found")
+class PlanNotFound: IllegalAccessException("Plan not found")
+
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "First name must be not null")
 class FirstNameNull: IllegalAccessException("First name must be not null")
 

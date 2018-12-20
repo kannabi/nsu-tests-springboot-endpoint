@@ -1,13 +1,13 @@
 package com.nsu.fit.tests.schukin.testsspringboot.plan.services
 
 import com.nsu.fit.tests.schukin.testsspringboot.common.utils.validate
+import com.nsu.fit.tests.schukin.testsspringboot.customers.exceptions.PlanNotFound
 import com.nsu.fit.tests.schukin.testsspringboot.plan.dto.Plan
 import com.nsu.fit.tests.schukin.testsspringboot.plan.exceptions.*
 import com.nsu.fit.tests.schukin.testsspringboot.plan.repositories.PlanRepository
 import org.springframework.beans.factory.annotation.Autowired
 
 import org.springframework.stereotype.Service
-import java.util.*
 import java.util.regex.Pattern
 
 
@@ -34,7 +34,9 @@ class PlanService
                 details = details,
                 fee = fee
             )
-        )
+        ).also {
+            println("$it")
+        }
     }
 
     fun updatePlan(id: String, name: String?, details: String?, fee: Int?): Plan {
@@ -59,8 +61,8 @@ class PlanService
     fun removePlan(id: String) =
         planRepository.delete(id)
 
-    fun getPlan(id: String): Plan? =
-        planRepository.findOne(id)
+    fun getPlan(id: String): Plan =
+        planRepository.findOne(id) ?: throw PlanNotFound()
 
     /**
      * Метод возвращает список планов доступных для покупки.

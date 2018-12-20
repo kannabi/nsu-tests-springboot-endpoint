@@ -21,10 +21,10 @@ class Subscription (
     @OneToOne
     @JoinColumn(name = "customer_id")
     @field:JsonProperty("customerId")
-    var customer: Customer,
+    var customer: Customer? = null,
 
     @OneToOne
     @JoinColumn(name = "plan_id")
     @field:JsonProperty("planId")
-    var planId: Plan
+    var plan: Plan? = null
 )

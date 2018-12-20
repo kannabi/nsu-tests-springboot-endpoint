@@ -8,3 +8,6 @@ class CustomerNotFound: IllegalAccessException("Customer not found")
 
 @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE, reason = "Incoming balance is wrong")
 class BalanceIncomingException: IllegalAccessException("Incoming balance is wrong")
+
+@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE, reason = "Not enough money")
+class NotEnoughMoney: IllegalAccessException("Not enough money")

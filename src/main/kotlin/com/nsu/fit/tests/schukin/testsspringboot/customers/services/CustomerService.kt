@@ -89,6 +89,18 @@ class CustomerService
         return customerRepository.save(customer)
     }
 
+    fun topDownBalance(customerId: String, amount: Int): Customer {
+        if (amount <= 0) {
+            throw BalanceIncomingException()
+        }
+        val customer = customerRepository.findOne(customerId) ?: throw CustomerNotFound()
+        if (customer.balance - amount < 0) {
+            throw NotEnoughMoney()
+        }
+        customer.balance -= amount
+        return customerRepository.save(customer)
+    }
+
     private fun validateCustomerFields(firstName: String?, lastName: String?, login: String?, password: String?) {
 
         firstName?.let {

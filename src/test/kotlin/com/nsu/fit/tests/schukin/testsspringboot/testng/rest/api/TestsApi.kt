@@ -2,6 +2,10 @@ package com.nsu.fit.tests.schukin.testsspringboot.testng.rest.api
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.nsu.fit.tests.schukin.testsspringboot.plan.dto.Plan
+import com.nsu.fit.tests.schukin.testsspringboot.plan.dto.requests.CreatePlanRequest
+import com.nsu.fit.tests.schukin.testsspringboot.subscription.dto.Subscription
+import com.nsu.fit.tests.schukin.testsspringboot.subscription.dto.requests.CreateSubscriptionRequest
 import com.nsu.fit.tests.schukin.testsspringboot.testng.rest.api.data.ErrorResponse
 import com.nsu.fit.tests.schukin.testsspringboot.testng.rest.api.data.admin.AdminSignInResponse
 import com.nsu.fit.tests.schukin.testsspringboot.testng.rest.api.data.admin.AdminSignRequest
@@ -44,7 +48,12 @@ class TestsApi(
     fun signIn(login: String, password: String) =
         controller.signIn(
             AdminSignRequest(login, password)
-        )
+        ).map {
+            AdminSignInResponse(
+                wrapToken(it.token ?: throw Exception("token is null")),
+                it.admin
+            )
+        }
 
     fun createCustomer(
         firstName: String, lastName: String,
@@ -55,14 +64,14 @@ class TestsApi(
             CreateCustomerRequest(
                 firstName, lastName, login, password
             ),
-            wrapToken(token)
+            token
         )
 
     fun getCustomer(id: String, token: String) =
-        controller.getCustomer(id, wrapToken(token))
+        controller.getCustomer(id, token)
 
     fun getAllCustomers(token: String) =
-        controller.getCustomers(wrapToken(token))
+        controller.getCustomers(token)
 
     fun updateCustomer(
         id: String, token: String,
@@ -72,18 +81,41 @@ class TestsApi(
         password: String? = null
     ) =
         controller.updateCustomer(
-            id, wrapToken(token),
+            id, token,
             UpdateCustomerRequest(
                 firstName, lastName, login, password
             )
         )
 
     fun topUpBalance(id: String, incoming: Int, token: String) =
-        controller.topUpBalance(id, wrapToken(token), TopUpBalanceRequest(incoming))
+        controller.topUpBalance(id, token, TopUpBalanceRequest(incoming))
 
     fun deleteCustomer(id: String, token: String) =
-        controller.deleteCustomer(id, wrapToken(token))
+        controller.deleteCustomer(id, token)
 
+    fun createPlan(name: String, details: String, fee: Int, token: String) =
+        controller.createPlan(
+            CreatePlanRequest(name, details, fee),
+            token
+        )
+
+    fun getPlan(id: String, token: String) =
+        controller.getPlan(id, token)
+
+    fun deletePlan(id: String, token: String) =
+        controller.deletePlan(id, token)
+
+    fun createSubscription(customerId: String, planId: String, token: String) =
+        controller.createSubscription(
+            CreateSubscriptionRequest(customerId, planId),
+            token
+        )
+
+    fun getSubscription(id: String, token: String) =
+        controller.getSubscription(id, token)
+
+    fun deleteSubscription(id: String, token: String) =
+        controller.deleteSubscription(id, token)
 
     private interface RetrofitController {
 
@@ -123,6 +155,42 @@ class TestsApi(
 
         @DELETE("/customer/{id}")
         fun deleteCustomer(
+            @Path("id") id: String,
+            @Header("Authorization") token: String
+        ): Single<Unit>
+
+        @POST("/plan")
+        fun createPlan(
+            @Body request: CreatePlanRequest,
+            @Header("Authorization") token: String
+        ): Single<Plan>
+
+        @GET("/plan/{id}")
+        fun getPlan(
+            @Path("id") id: String,
+            @Header("Authorization") token: String
+        ): Single<Plan>
+
+        @DELETE("/plan/{id}")
+        fun deletePlan(
+            @Path("id") id: String,
+            @Header("Authorization") token: String
+        ): Single<Unit>
+
+        @POST("/subscription")
+        fun createSubscription(
+            @Body request: CreateSubscriptionRequest,
+            @Header("Authorization") token: String
+        ): Single<Subscription>
+
+        @GET("/subscription/{id}")
+        fun getSubscription(
+            @Path("id") id: String,
+            @Header("Authorization") token: String
+        ): Single<Subscription>
+
+        @DELETE("/subscription/{id}")
+        fun deleteSubscription(
             @Path("id") id: String,
             @Header("Authorization") token: String
         ): Single<Unit>

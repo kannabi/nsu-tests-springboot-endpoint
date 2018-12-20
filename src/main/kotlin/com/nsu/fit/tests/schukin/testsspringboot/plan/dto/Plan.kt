@@ -27,4 +27,8 @@ class Plan(
     @Column(name = "fee")
     @field:JsonProperty("fee")
     var fee: Int? = null
-)
+) {
+    override fun toString(): String {
+        return "Plan(id=$id, name=$name, details=$details, fee=$fee)"
+    }
+}
